@@ -31,11 +31,15 @@ const Task: React.FC<TaskProps> = ({ task }) => {
         router.refresh();
     }
 
-    const handleDeleteTask = async (id: string) => {
-        await deleteTodo(id);
-        setOpenModalDelete(false);
-        router.refresh();
-    }
+    const handleDeleteTask = async (task: ITask) => {
+        if (task.id) {
+          await deleteTodo(task.id);
+          setOpenModalDelete(false);
+          router.refresh();
+        } else {
+          console.error("ID da tarefa não encontrado.");
+        }
+      };
     
     
 
@@ -60,15 +64,16 @@ const Task: React.FC<TaskProps> = ({ task }) => {
                     </form>
                 </Modal>
 
-            <FaTrashAlt  onClick={() => setOpenModalDelete(true)} cursor="pointer" className="text-red-500" size={25}/>
-            <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
-                   <h3 className="text-alg">Do you really want to delete this task?</h3>
-                   <div className="modal-action">
-                        <button className="btn" onClick={() => handleDeleteTask(task.id)}>
-                            Yes
+                <FaTrashAlt onClick={() => setOpenModalDelete(true)} cursor="pointer" className="text-red-500" size={25} />
+                    <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
+                    <h3 className="text-alg">Do you really want to delete this task?</h3>
+                    <div className="modal-action">
+
+                        <button className="btn" onClick={() => handleDeleteTask(task)}> 
+                        Yes
                         </button>
-                   </div>
-                </Modal>
+                    </div>
+                    </Modal>
         </td>
     </tr>
 
